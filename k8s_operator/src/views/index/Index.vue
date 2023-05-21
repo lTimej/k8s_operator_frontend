@@ -1,105 +1,157 @@
 <template>
   <div class="home">
-    <el-container >
-      <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-        <el-menu :default-openeds="['1', '3']">
-          <el-submenu index="1">
-            <template slot="title"><i class="el-icon-message"></i>导航一</template>
-            <el-menu-item-group>
-              <template slot="title">分组一</template>
-              <el-menu-item index="1-1">选项1</el-menu-item>
-              <el-menu-item index="1-2">选项2</el-menu-item>
-            </el-menu-item-group>
-            <el-menu-item-group title="分组2">
-              <el-menu-item index="1-3">选项3</el-menu-item>
-            </el-menu-item-group>
-            <el-submenu index="1-4">
-              <template slot="title">选项4</template>
-              <el-menu-item index="1-4-1">选项4-1</el-menu-item>
-            </el-submenu>
-          </el-submenu>
-          <el-submenu index="2">
-            <template slot="title"><i class="el-icon-menu"></i>导航二</template>
-            <el-menu-item-group>
-              <template slot="title">分组一</template>
-              <el-menu-item index="2-1">选项1</el-menu-item>
-              <el-menu-item index="2-2">选项2</el-menu-item>
-            </el-menu-item-group>
-            <el-menu-item-group title="分组2">
-              <el-menu-item index="2-3">选项3</el-menu-item>
-            </el-menu-item-group>
-            <el-submenu index="2-4">
-              <template slot="title">选项4</template>
-              <el-menu-item index="2-4-1">选项4-1</el-menu-item>
-            </el-submenu>
-          </el-submenu>
-        </el-menu>
-      </el-aside>
-      
+    <div class="home-head">
+      <el-row>
+        <el-col :span="24">
+          <div class="grid-content bg-purple-dark" >
+            <div class="logout" @click="logout">
+              <i class="el-icon-switch-button"></i>
+              <span>登出</span>
+            </div>
+            <div class="user-info">
+              <div class="user-tx"><img src="~assets/img/tx.jpg"/></div>
+              <div class="user-info-name">谢勇</div>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+    </div>
+    <div>
       <el-container>
-        <el-header style="text-align: right; font-size: 12px">
-          <el-dropdown>
-            <i class="el-icon-setting" style="margin-right: 15px"></i>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>查看</el-dropdown-item>
-              <el-dropdown-item>新增</el-dropdown-item>
-              <el-dropdown-item @click="logout">退出</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-          <span>谢勇</span>
-        </el-header>
-        
-        <el-main>
-          <el-table :data="tableData">
-            <el-table-column prop="date" label="日期" width="140">
-            </el-table-column>
-            <el-table-column prop="name" label="姓名" width="120">
-            </el-table-column>
-            <el-table-column prop="address" label="地址">
-            </el-table-column>
-          </el-table>
-        </el-main>
+        <el-container>
+          <el-aside width="100px">
+            <div class="my-resource" @click="toMyResource" :class="{active: resource=='my_resource'}">
+              <i class="el-icon-stopwatch"></i>
+              <span>我的资源</span>
+            </div>
+            <div class="space-template" @click="toSpaceTemplate" :class="{active: resource=='space_template'}">
+              <i class="el-icon-document-copy"></i>
+              <span>空间模板</span>
+            </div>
+          </el-aside>
+          <my-resource v-show="resource == 'my_resource'" />
+          <space-template v-show="resource == 'space_template'"/>
+        </el-container>
       </el-container>
-    </el-container>
+    </div>
   </div>
 </template>
 
 <script>
+import MyResource from "views/index/MyResource"
+import SpaceTemplate from "views/index/SpaceTemplate"
 export default {
   name: "Index",
   data() {
-    const item = {
-      date: '2023-05-20',
-      name: '谢勇',
-      address: '深圳市黄贝岭118号'
-    };
     return {
-      tableData: Array(5).fill(item)
+      resource: "my_resource",
     }
   },
   components: {
-
+    MyResource,
+    SpaceTemplate,
   },
   mounted() {
 
   },
   methods: {
     logout(){
-      console.log("=====")
       this.$router.push("/login")
+    },
+    toMyResource(){
+      this.resource = "my_resource";
+      console.log(this.resource)
+    },
+    toSpaceTemplate(){
+      this.resource = "space_template";
     }
   },
 }
 
 </script>
 <style scoped>
-  .el-header {
-    background-color: #B3C0D1;
-    color: #333;
-    line-height: 60px;
+  .el-row {
+    margin-bottom: 20px;
   }
-  
+  .el-row:last-child{
+    margin-bottom: 0;
+  }
+  .el-col {
+    border-radius: 4px;
+  }
+  .home-head{
+    height: 44px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom:0;
+    z-index: 2;
+  }
+  .grid-content{
+    height: 44px;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    line-height: 44px;
+    color: white  ;
+  }
+  .bg-purple-dark {
+    background: #99a9bf;
+  }
+  .home .user-info{
+    float:right;
+    margin: 0 10px;
+    text-align: center;
+  }
+  .home .user-info img{
+    width: 28px;
+    height: 28px;
+    border-radius: 100%;
+  }
+  .home .user-info .user-tx{
+    float: left;
+    margin: 8px 5px;
+  }
+  .home .user-info .user-info-name{
+   float: right;
+  }
+  .home .logout{
+    float: right;
+    margin: 0 10px;
+    cursor: pointer;
+  }
+  .home .logout i{
+    color: red;
+    padding-right: 5px;
+    font-size: 20px;
+  }
   .el-aside {
+    background-color: #D3DCE6;
     color: #333;
+    text-align: center;
+    /* line-height: 200px; */
+    position: absolute;
+    top: 0;
+    height: 100%;
+    padding: 0;
+    left:0;
+    z-index: 1;
+  }
+  .home .my-resource{
+    margin-top: 44px;
+  }
+  .home .my-resource,.home .space-template{
+    color: black;
+    padding: 10px 5px;
+    cursor: pointer;
+  }
+  .home .my-resource i,.home .space-template i{
+    font-size: 22px;
+    color: black;
+    padding-right: 3px;
+  }
+  .active, .active i{
+    color: orange !important;
   }
 </style>
