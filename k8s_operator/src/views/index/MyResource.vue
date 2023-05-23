@@ -2,7 +2,7 @@
   <div class="my-resource">
     <el-main>
         <div class="my-resource-item">
-            <div>
+            <div class="circle">
                 <div class="cpu"><el-progress type="circle" :percentage="0"></el-progress></div>
                 <div class="memory"><el-progress type="circle" :percentage="25"></el-progress></div>
                 <div class="disk"><el-progress type="circle" :percentage="100" status="success"></el-progress></div>
@@ -64,6 +64,9 @@ export default {
   .my-resource-item{
     margin:44px 0 0 100px;
   }
+  .my-resource-item .circle{
+    padding: 20px 0;
+  }
   .cpu,.memory,.disk,.net{
     width: 25%;
     display: inline-block;
@@ -77,15 +80,16 @@ export default {
     flex: 1;
     align-items:center;
     text-align: center;
-    height: 20px;
+    /* height: 20px; */
     margin: 15px;
     /* display: inline-block; */
   }
   .c{
-    width: 40px;
-    height: 20px;
+    width: 80px;
+    height: 30px;
     background-color: red;
-    border-top-left-radius: 50%;
-    border-bottom-left-radius: 50%;
+    border-radius: 15px;
+    text-align: center;
+    margin-left: 100px;
   }
 </style>
