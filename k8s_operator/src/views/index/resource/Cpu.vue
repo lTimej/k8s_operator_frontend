@@ -1,8 +1,7 @@
 <template>
-  <div class="space-template">
+  <div class="cpu">
     <el-main>
-        <div class="space-template-item"  ref="chart">
-            我的资源
+        <div class="cpu-item"  ref="cpu">
         </div>
     </el-main>
   </div>
@@ -24,10 +23,9 @@ export default {
 
   },
   mounted() {
-    var chart = this.$refs.chart
+    var chart = this.$refs.cpu
     var myChart = this.$echarts.init(chart)
     var option;
-    // var oneDay = 1000;
     var date = [];
     var data = [Math.random() * 150];
     var now = new Date();
@@ -55,7 +53,6 @@ export default {
     option = {
       xAxis: {
         type: 'category',
-        // boundaryGap: false,
         boundaryGap:["20%","20%"],
         data: date
       },
@@ -115,7 +112,7 @@ export default {
     width: 100%;
     padding: 0;
   }
-  .space-template-item{
+  .cpu-item{
       margin:44px 0 0 150px;
       width: 300px;
       height: 225px;
