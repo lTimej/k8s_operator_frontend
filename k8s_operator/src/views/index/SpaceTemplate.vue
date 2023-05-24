@@ -1,19 +1,25 @@
 <template>
   <div class="space-template">
-    <el-main>
-        <div class="space-template-item"  ref="chart">
-            我的资源
-        </div>
-    </el-main>
+   
+      <cpu />
+      <memory />
+      <disk />
+      <net />
+   
+    <!-- <div class="circle">
+        <div class="cpu"><el-progress type="circle" :percentage="0"></el-progress></div>
+        <div class="memory"><el-progress type="circle" :percentage="25"></el-progress></div>
+        <div class="disk"><el-progress type="circle" :percentage="100" status="success"></el-progress></div>
+        <div class="net"><el-progress type="circle" :percentage="50" status="exception"></el-progress></div>
+    </div> -->
   </div>
 </template>
 
 <script>
-//import {getResource} from "networks/resource/resource"
-import {getCpu} from "networks/resource/resource"
-//import {getmemory} from "networks/resource/resource"
-//import {getdisk} from "networks/resource/resource"
-//import {getnetwork} from "networks/resource/resource"
+import Cpu from "views/index/resource/Cpu"
+import Memory from "views/index/resource/Memory"
+import Disk from "views/index/resource/Disk"
+import Net from "views/index/resource/Net"
 export default {
   data () {
     return {
@@ -21,79 +27,13 @@ export default {
     }
   },
   components: {
-
+    Cpu,
+    Memory,
+    Disk,
+    Net,
   },
   mounted() {
-    var chart = this.$refs.chart
-    var myChart = this.$echarts.init(chart)
-    var option;
-    // var oneDay = 1000;
-    var date = [];
-    var data = [Math.random() * 150];
-    var now = new Date();
     
-    function addData(shift) {
-      var now1 = [now.getHours(), now.getMinutes(), now.getSeconds()].join(':');
-      date.push(now1);
-      if(!shift){
-        data.push(0);
-      }else{
-        getCpu().then(res => {
-          console.log(res,"=======");
-          data.push(res.data.data.cpu_utility);
-        })
-      }
-      if (shift) {
-        date.shift();
-        data.shift();
-      }
-      now = new Date(now.setSeconds(now.getSeconds() + 1));
-    }
-    for (var i = 1; i < 10; i++) {
-      addData();
-    }
-    option = {
-      xAxis: {
-        type: 'category',
-        // boundaryGap: false,
-        boundaryGap:["20%","20%"],
-        data: date
-      },
-      yAxis: {
-        boundaryGap: false,
-        // boundaryGap: [0, '10%'],
-        type: 'value'
-      },
-      series: [
-        {
-          name: '成交',
-          type: 'line',
-          smooth: true,
-          symbol: 'none',
-          stack: 'a',
-          areaStyle: {
-            normal: {}
-          },
-          data: data
-        }
-      ]
-    };
-    setInterval(function () {
-      addData(true);
-      myChart.setOption({
-        xAxis: {
-          data: date
-        },
-        series: [
-          {
-            name: '成交',
-            data: data
-          }
-        ]
-      });
-    }, 1000);
-
-    option && myChart.setOption(option);
   },
   methods: {
 
@@ -116,8 +56,18 @@ export default {
     padding: 0;
   }
   .space-template-item{
-      margin:44px 0 0 150px;
-      width: 300px;
-      height: 225px;
+      margin:44px 0 0 80px;
+      /* width: 300px; */
+      /* height: 225px; */
     }
+  /* .space-template .process{
+
+  }
+  .space-template .circle{
+    padding: 20px 0;
+  }
+  .cpu,.memory,.disk,.net{
+    width: 25%;
+    display: inline-block;
+  } */
 </style>
