@@ -1,17 +1,17 @@
 <template>
   <div class="space-template">
-   
+    <div class="process">
       <cpu />
       <memory />
       <disk />
       <net />
-   
-    <!-- <div class="circle">
+    </div>
+    <div class="circle">
         <div class="cpu"><el-progress type="circle" :percentage="0"></el-progress></div>
         <div class="memory"><el-progress type="circle" :percentage="25"></el-progress></div>
         <div class="disk"><el-progress type="circle" :percentage="100" status="success"></el-progress></div>
         <div class="net"><el-progress type="circle" :percentage="50" status="exception"></el-progress></div>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -43,7 +43,7 @@ export default {
 </script>
 <style scoped>
 .el-main {
-    background-color: #E9EEF3;
+    /* background-color: #E9EEF3;
     color: #333;
     text-align: center;
     position: absolute;
@@ -53,21 +53,41 @@ export default {
     bottom:0;
     height: 100%;
     width: 100%;
-    padding: 0;
+    padding: 0; */
   }
   .space-template-item{
       margin:44px 0 0 80px;
       /* width: 300px; */
       /* height: 225px; */
     }
-  /* .space-template .process{
-
+  .space-template .process{
+    /* background-color: #E9EEF3; */
+    color: #333;
+    /* text-align: center; */
+    position: absolute;
+    top: 0;
+    right:0;
+    /* left:30px; */
+    bottom:0;
+    height: 100%;
+    width: 100%;
+    padding: 0;
   }
   .space-template .circle{
-    padding: 20px 0;
+     /* background-color: #E9EEF3; */
+     color: #333;
+    /* text-align: center; */
+    position: absolute;
+    top: 300px;
+    right:0;
+    left: 240px;
+    bottom:0;
+    /* height: 100%; */
+    /* width: 100%; */
+    padding: 0;
   }
-  .cpu,.memory,.disk,.net{
+  .circle .cpu,.circle .memory,.circle .disk,.circle .net{
     width: 25%;
     display: inline-block;
-  } */
+  }
 </style>

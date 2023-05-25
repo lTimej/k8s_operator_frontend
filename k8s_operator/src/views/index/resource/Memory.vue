@@ -117,7 +117,7 @@ export default {
   .memory{
     height: 100%;
     position: absolute;
-    left:300px;
+    left:340px;
     top:0;
   }
   .memory-item{

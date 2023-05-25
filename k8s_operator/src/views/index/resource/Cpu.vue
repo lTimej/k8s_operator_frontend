@@ -126,7 +126,7 @@ export default {
     height: 100%;
     position: absolute;
     top:0;
-    left:0;
+    left:45px;
   }
   .cpu-item{
       margin:44px 0 0 80px;
