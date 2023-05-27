@@ -13,11 +13,15 @@
 // import {getCpu} from "networks/resource/resource"
 //import {getmemory} from "networks/resource/resource"
 //import {getdisk} from "networks/resource/resource"
-//import {getnetwork} from "networks/resource/resource"
+import {getNetwork} from "networks/resource/resource"
 export default {
+  name: "Net",
   data () {
     return {
-
+      date: [],
+      data: [],
+      option: {},
+      myChart: null,
     }
   },
   components: {
@@ -25,77 +29,86 @@ export default {
   },
   mounted() {
     var chart = this.$refs.net
-    var myChart = this.$echarts.init(chart)
-    var option;
-    var date = [];
-    var data = [Math.random() * 150];
-    var now = new Date();
-    
-    function addData(shift) {
+    this.myChart = this.$echarts.init(chart)
+    this.init_data()
+  },
+  methods: {
+    addData(shift){
+      var now = new Date();
       var now1 = [now.getHours(), now.getMinutes(), now.getSeconds()].join(':');
-      date.push(now1);
+      this.date.push(now1);
       if(!shift){
-        data.push(0);
+        this.data.push(0);
       }else{
-        data.push(1);
-        // getCpu().then(res => {
-        //   console.log(res,"=======");
-        //   data.push(res.data.data.cpu_utility);
-        // })
+        // data.push(1);
+        getNetwork().then(res => {
+          if(res.status != 200){
+            this.data.push(1);
+          }else{
+            this.data.push(res.data.data.net_download);
+            this.$emit("getNet",res.data.data.net_download)
+          }
+          console.log(res,"=======");
+          
+        }).catch(err => {
+          this.data.push(this.data[this.data.length-1]);
+            console.log(err)
+          })
       }
       if (shift) {
-        date.shift();
-        data.shift();
+        this.date.shift();
+        this.data.shift();
       }
       now = new Date(now.setSeconds(now.getSeconds() + 1));
-    }
-    for (var i = 1; i < 10; i++) {
-      addData();
-    }
-    option = {
-      xAxis: {
-        type: 'category',
-        boundaryGap:["20%","20%"],
-        data: date
-      },
-      yAxis: {
-        boundaryGap: false,
-        // boundaryGap: [0, '10%'],
-        type: 'value'
-      },
-      series: [
-        {
-          name: '成交',
-          type: 'line',
-          smooth: true,
-          symbol: 'none',
-          stack: 'a',
-          areaStyle: {
-            normal: {}
+    },
+    set_interval(){
+      this.addData(true);
+        console.log(this.resource,"--22222-===")
+        this.myChart.setOption({
+          xAxis: {
+            data: this.date
           },
-          data: data
-        }
-      ]
-    };
-    setInterval(function () {
-      addData(true);
-      myChart.setOption({
+          series: [
+            {
+              name: '成交',
+              data: this.data
+            }
+          ]
+        });
+    },
+    init_data(){
+      for (var i = 1; i < 150; i++) {
+        this.addData(false);
+      }
+      this.option = {
         xAxis: {
-          data: date
+          type: 'category',
+          boundaryGap:false,
+          data: this.date
+        },
+        yAxis: {
+          boundaryGap: false,
+          type: 'value'
         },
         series: [
           {
             name: '成交',
-            data: data
+            type: 'line',
+            smooth: true,
+            symbol: 'none',
+            stack: 'a',
+            areaStyle: {
+              normal: {}
+            },
+            data: this.data,
+            color: '#008000'
           }
         ]
-      });
-    }, 1000);
+      };
+      setInterval(this.set_interval, 1000);
 
-    option && myChart.setOption(option);
-  },
-  methods: {
-
+      this.option && this.myChart.setOption(this.option);
+    },
   },
 }
 

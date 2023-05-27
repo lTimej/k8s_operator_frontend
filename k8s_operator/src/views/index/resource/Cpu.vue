@@ -11,14 +11,19 @@
 </template>
 
 <script>
-//import {getResource} from "networks/resource/resource"
-// import {getCpu} from "networks/resource/resource"
-//import {getmemory} from "networks/resource/resource"
-//import {getdisk} from "networks/resource/resource"
-//import {getnetwork} from "networks/resource/resource"
+
+import {getCpu} from "networks/resource/resource"
 export default {
+  name: "Cpu",
+  props:{
+    
+  },
   data () {
     return {
+      date: [],
+      data: [],
+      option: {},
+      myChart: null,
 
     }
   },
@@ -27,55 +32,73 @@ export default {
   },
   mounted() {
     var chart1 = this.$refs.cpu1;
-    var myChart1 = this.$echarts.init(chart1);
-    this.init_data(myChart1);
+    this.myChart = this.$echarts.init(chart1);
+    this.init_data();
     // var chart2 = this.$refs.cpu2;
     // var myChart2 = this.$echarts.init(chart2);
     // this.init_data(myChart2);
     
   },
   methods: {
-    init_data(myChart){
-      var option;
-      var date = [];
-      var data = [Math.random() * 150];
+    addData(shift){
       var now = new Date();
-      
-      function addData(shift) {
-        var now1 = [now.getHours(), now.getMinutes(), now.getSeconds()].join(':');
-        date.push(now1);
-        if(!shift){
-          data.push(0);
-        }else{
-          data.push(1);
-          // getCpu().then(res => {
-          //   console.log(res,"=======");
-          //   data.push(res.data.data.cpu_utility);
-          // })
-        }
-        if (shift) {
-          date.shift();
-          data.shift();
-        }
-        now = new Date(now.setSeconds(now.getSeconds() + 1));
+      var now1 = [now.getHours(), now.getMinutes(), now.getSeconds()].join(':');
+      this.date.push(now1);
+      if(!shift){
+        this.data.push(0);
+      }else{
+        // data.push(1);
+        getCpu().then(res => {
+          console.log(res,"=======");
+          if(res.status != 200){
+            this.data.push(1);
+          }else{
+            this.data.push(res.data.data.cpu_utility);
+            this.$emit("getCpu",res.data.data.cpu_utility)
+          }
+        }).catch(err => {
+          this.data.push(this.data[this.data.length-1]);
+          console.log(err)
+        })
       }
-      for (var i = 1; i < 10; i++) {
-        addData();
+      if (shift) {
+        this.date.shift();
+        this.data.shift();
       }
-      option = {
+      now = new Date(now.setSeconds(now.getSeconds() + 1));
+    },
+    set_interval(){
+      this.addData(true);
+        console.log(this.resource,"--22222-===")
+        this.myChart.setOption({
+          xAxis: {
+            data: this.date
+          },
+          series: [
+            {
+              name: '成交',
+              data: this.data
+            }
+          ]
+        });
+    },
+    init_data(){
+      for (var i = 1; i < 150; i++) {
+        this.addData(false);
+      }
+      this.option = {
         xAxis: {
           type: 'category',
-          boundaryGap:["20%","20%"],
-          data: date
+          boundaryGap:false,
+          data: this.date
         },
         yAxis: {
           boundaryGap: false,
-          // boundaryGap: [0, '10%'],
           type: 'value'
         },
         series: [
           {
-            name: 'sdfsdfdsfsdfsfdsdf',
+            name: '成交',
             type: 'line',
             smooth: true,
             symbol: 'none',
@@ -83,26 +106,14 @@ export default {
             areaStyle: {
               normal: {}
             },
-            data: data
+            data: this.data,
+            color: 'rgb(255,0,0)'
           }
         ]
       };
-      setInterval(function () {
-        addData(true);
-        myChart.setOption({
-          xAxis: {
-            data: date
-          },
-          series: [
-            {
-              name: '成交',
-              data: data
-            }
-          ]
-        });
-      }, 1000);
+      setInterval(this.set_interval, 1000);
 
-      option && myChart.setOption(option);
+      this.option && this.myChart.setOption(this.option);
     }
   },
 }

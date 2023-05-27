@@ -4,15 +4,15 @@ export function requests(config){
     //实例化对象
     let instance
     instance = axios.create({
-        baseURL:'http://192.168.70.99:8998',
-        timeout: 5000,
+        baseURL:'http://172.20.16.20:8998',
+        timeout: 10000,
         // withCredentials: true,
     });
     //请求前调用
     instance.interceptors.request.use(config=>{
         return config
     },error => {
-        console.log(error);
+        console.log(error,333333);
         return error;
     });
 
