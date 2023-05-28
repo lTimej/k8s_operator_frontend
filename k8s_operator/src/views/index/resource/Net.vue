@@ -115,17 +115,7 @@ export default {
 </script>
 <style scoped>
 .el-main {
-    /* background-color: #E9EEF3;
-    color: #333;
-    text-align: center;
-    position: absolute;
-    top: 0;
-    right:0;
-    left:0;
-    bottom:0;
-    height: 100%;
-    width: 100%;
-    padding: 0; */
+    padding: 0;
   }
   .net{
     height: 100%;
