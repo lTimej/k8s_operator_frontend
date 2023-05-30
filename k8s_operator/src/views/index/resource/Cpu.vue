@@ -49,7 +49,7 @@ export default {
       }else{
         // data.push(1);
         getCpu().then(res => {
-          console.log(res,"=======");
+          // console.log(res,"=======");
           if(res.status != 200){
             this.data.push(1);
           }else{
@@ -69,7 +69,7 @@ export default {
     },
     set_interval(){
       this.addData(true);
-        console.log(this.resource,"--22222-===")
+        // console.log(this.resource,"--22222-===")
         this.myChart.setOption({
           xAxis: {
             data: this.date

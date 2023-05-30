@@ -19,6 +19,7 @@
   
   <script>
   import { login } from '@/networks/user/user';
+  import {Base64} from "js-base64"
   export default {
       data() {
         var checkUsername = (rule, value, callback) => {
@@ -77,6 +78,10 @@
                         this.$toast.show(res.data.msg,2000)
                     }else{
                         this.$toast.show(res.data.msg,2000)
+                        const jsonData = JSON.stringify(res.data.data) 
+                        const encodedData = Base64.encode(jsonData)
+                        window.sessionStorage.setItem("userInfo",encodedData)
+                        window.sessionStorage.setItem("token",res.data.data.Token)
                         this.$router.push("/")
                     }
                 }

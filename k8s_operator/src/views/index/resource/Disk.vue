@@ -48,7 +48,7 @@ export default {
             this.data.push(res.data.data.disk_free_percent);
             this.$emit("getDisk",res.data.data.disk_free_percent)
           }
-          console.log(res,"=======");
+          // console.log(res,"=======");
           
         }).catch(err => {
           this.data.push(this.data[this.data.length-1]);
@@ -63,7 +63,7 @@ export default {
     },
     set_interval(){
       this.addData(true);
-        console.log(this.resource,"--22222-===")
+        // console.log(this.resource,"--22222-===")
         this.myChart.setOption({
           xAxis: {
             data: this.date

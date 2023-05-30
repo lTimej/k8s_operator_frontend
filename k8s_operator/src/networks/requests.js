@@ -10,20 +10,22 @@ export function requests(config){
     });
     //请求前调用
     instance.interceptors.request.use(config=>{
+        console.log(config)
+        config.headers.Authorization = "Bearer " + window.sessionStorage.getItem("token")
         return config
     },error => {
-        console.log(error,333333);
+        // console.log(error,333333);
         return error;
     });
 
     //响应前被调用
     instance.interceptors.response.use(res=>{
         //成功响应
-        console.log(res,666666)
+        // console.log(res,666666)
         return res
     },error => {
         //错误响应
-        console.log(error,88888888)
+        // console.log(error,88888888)
         return error.response;
 
     });

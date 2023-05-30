@@ -60,7 +60,7 @@ export default {
     },
     toMyResource(){
       this.resource = "my_resource";
-      console.log(this.resource)
+      // console.log(this.resource)
     },
     toSpaceTemplate(){
       this.resource = "space_template";

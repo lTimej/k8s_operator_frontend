@@ -48,8 +48,8 @@ export default {
             this.data.push(res.data.data.net_download);
             this.$emit("getNet",res.data.data.net_download)
           }
-          console.log(res,"=======");
-          
+          // console.log(res,"=======");
+          // 
         }).catch(err => {
           this.data.push(this.data[this.data.length-1]);
             console.log(err)
@@ -63,7 +63,7 @@ export default {
     },
     set_interval(){
       this.addData(true);
-        console.log(this.resource,"--22222-===")
+        // console.log(this.resource,"--22222-===")
         this.myChart.setOption({
           xAxis: {
             data: this.date
