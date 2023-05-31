@@ -47,9 +47,7 @@ export default {
       if(!shift){
         this.data.push(0);
       }else{
-        // data.push(1);
         getCpu().then(res => {
-          // console.log(res,"=======");
           if(res.status != 200){
             this.data.push(1);
           }else{
@@ -69,7 +67,6 @@ export default {
     },
     set_interval(){
       this.addData(true);
-        // console.log(this.resource,"--22222-===")
         this.myChart.setOption({
           xAxis: {
             data: this.date
@@ -111,10 +108,16 @@ export default {
           }
         ]
       };
-      setInterval(this.set_interval, 1000);
+      setInterval(this.set_interval, 100000);
 
       this.option && this.myChart.setOption(this.option);
     }
+  },
+  deactivated(){
+    console.log("deactivated狗子函数")
+  },
+  activated() {
+    console.log("1激活activated钩子函数");
   },
 }
 

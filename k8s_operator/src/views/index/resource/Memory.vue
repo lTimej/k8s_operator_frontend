@@ -105,7 +105,7 @@ export default {
           }
         ]
       };
-      setInterval(this.set_interval, 1000);
+      setInterval(this.set_interval, 100000);
 
       this.option && this.myChart.setOption(this.option);
     }
