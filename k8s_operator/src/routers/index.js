@@ -1,14 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-
 //注册
 Vue.use(VueRouter);
 
 const routes = [
     {
       name:'首页',
-      component:() => import('views/index/Index'),
+      component:() => import('views/index/MyResource'),
       path:'/',
       meta:{
         title: "首页"
@@ -30,7 +29,28 @@ const routes = [
           title: "注册"
         }
     },
+    {
+      name:'我的资源',
+      component:() => import('views/index/MyResource'),
+      path:'/resource',
+      meta:{
+        title: "资源"
+      }
+  },
+  {
+    name:'空间模板',
+    component:() => import('views/index/SpaceTemplate'),
+    path:'/space/template',
+    meta:{
+      title: "空间模板"
+    }
+},
 ];
+
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location){
+  return originalPush.call(this,location).catch(err => err)
+}
 
 const router = new VueRouter({
     routes:routes,
@@ -38,14 +58,18 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to,from,next)=>{
-    // let white_list = ['/unloginprofile','/profile'];
-    // if(white_list.indexOf(to.path)!==-1){
-    //
-    //
-    // }
-    console.log(to,"1111111111")
     if(to.meta.title){
-        document.title = to.meta.title;
+      document.title = to.meta.title;
+  }
+    let white_list = ['/login','/register'];
+    if(white_list.indexOf(to.path)!==-1){
+      next();
+      return;
+    }
+    var token = window.sessionStorage.getItem("token")
+    if(token == "" || token == null){
+      next("/login")
+      return
     }
     next();
 });

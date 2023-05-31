@@ -1,18 +1,20 @@
 <template>
   <div class="my-resource">
-    <div class="process">
-      <cpu @getCpu="getCpu"/>
-      <memory @getMemory="getMemory"/>
-      <disk @getDisk="getDisk"/>
-      <net @getNet="getNet"/>
-    </div>
-    <div class="circle">
-        <div class="cpu"><el-progress type="circle" :percentage="cpu"></el-progress></div>
-        <div class="memory"><el-progress type="circle" :percentage="memory"></el-progress></div>
-        <div class="disk"><el-progress type="circle" :percentage="disk"></el-progress></div>
-        <div class="net"><el-progress type="circle" :percentage="0" :format="definePerc"></el-progress></div>
-        <!-- <div class="net"><el-progress type="circle" :percentage="resource.net" status="exception"></el-progress></div> -->
-    </div>
+    <index resource="my_resource">
+      <div class="process">
+        <cpu @getCpu="getCpu"/>
+        <memory @getMemory="getMemory"/>
+        <disk @getDisk="getDisk"/>
+        <net @getNet="getNet"/>
+      </div>
+      <div class="circle">
+          <div class="cpu"><el-progress type="circle" :percentage="cpu"></el-progress></div>
+          <div class="memory"><el-progress type="circle" :percentage="memory"></el-progress></div>
+          <div class="disk"><el-progress type="circle" :percentage="disk"></el-progress></div>
+          <div class="net"><el-progress type="circle" :percentage="0" :format="definePerc"></el-progress></div>
+          <!-- <div class="net"><el-progress type="circle" :percentage="resource.net" status="exception"></el-progress></div> -->
+      </div>
+    </index>
   </div>
 </template>
 
@@ -21,6 +23,7 @@ import Cpu from "views/index/resource/Cpu"
 import Memory from "views/index/resource/Memory"
 import Disk from "views/index/resource/Disk"
 import Net from "views/index/resource/Net"
+import Index from "views/index/Index"
 export default {
   data () {
     return {
@@ -28,6 +31,7 @@ export default {
       memory: 0,
       disk: 0,
       net: "",
+      // resource: "my_resource",
     }
   },
   components: {
@@ -35,9 +39,10 @@ export default {
     Memory,
     Disk,
     Net,
+    Index,
   },
   mounted() {
-    
+    // this.resource = "my_resource"
   },
   methods: {
     getCpu(cpu){

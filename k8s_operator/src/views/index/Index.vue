@@ -20,17 +20,18 @@
       <el-container>
         <el-container>
           <el-aside width="100px">
-            <div class="my-resource" @click="toMyResource" :class="{active: resource=='my_resource'}">
+            <div class="my-resource" @click="toMyResource" :class="{active: resource==='my_resource'}">
               <i class="el-icon-stopwatch"></i>
-              <span>我的资源</span>
+              <span>{{ resource }}</span>
             </div>
-            <div class="space-template" @click="toSpaceTemplate" :class="{active: resource=='space_template'}">
+            <div class="space-template" @click="toSpaceTemplate" :class="{active: resource==='space_template'}">
               <i class="el-icon-document-copy"></i>
-              <span>空间模板</span>
+              <span>{{ resource }}</span>
             </div>
           </el-aside>
-          <my-resource v-show="resource == 'my_resource'" />
-          <space-template v-show="resource == 'space_template'"/>
+          <slot></slot>
+          <!-- <my-resource v-show="resource == 'my_resource'" />
+          <space-template v-show="resource == 'space_template'"/> -->
         </el-container>
       </el-container>
     </div>
@@ -38,18 +39,18 @@
 </template>
 
 <script>
-import MyResource from "views/index/MyResource"
-import SpaceTemplate from "views/index/SpaceTemplate"
+// import MyResource from "views/index/MyResource"
+// import SpaceTemplate from "views/index/SpaceTemplate"
 export default {
   name: "Index",
   data() {
     return {
-      resource: "my_resource",
+      resource: "my_resource"
     }
   },
   components: {
-    MyResource,
-    SpaceTemplate,
+    // MyResource,
+    // SpaceTemplate,
   },
   mounted() {
 
@@ -57,13 +58,20 @@ export default {
   methods: {
     logout(){
       this.$router.push("/login")
+      // window.sessionStorage.removeItem("token")
+      window.sessionStorage.clear()
     },
     toMyResource(){
+      // this.resource = "my_resource";
+      this.$router.push("/resource")
       this.resource = "my_resource";
-      // console.log(this.resource)
+      console.log(this.resource,"=========")
     },
     toSpaceTemplate(){
+      // this.resource = "space_template";
+      this.$router.push("/space/template")
       this.resource = "space_template";
+      console.log(this.resource,"-----------")
     }
   },
 }
