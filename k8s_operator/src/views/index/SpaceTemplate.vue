@@ -1,7 +1,7 @@
 <template>
   <div class="space-template">
       <div class="space-template-item">
-        <div class="template">
+        <div class="template" @click="dialogFormVisible = true">
           <div class="template-img">
             <img src="~assets/logos/python.jpg" />
           </div>
@@ -16,7 +16,7 @@
                 启动
               </div>
               <div>
-                停止
+                编辑
               </div>
               <div>
                 删除
@@ -24,6 +24,37 @@
             </div>
           </div>
         </div>
+        <el-dialog title="创建空间模板" :visible.sync="dialogFormVisible">
+          <el-form :model="form" ref="form">
+            <el-form-item label="模板名称" prop="name" :label-width="formLabelWidth" :rules="[{required: true, message: '模板名称不能为空'}]">
+              <el-input v-model="form.name" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="模板类型" prop="kind"  :label-width="formLabelWidth" :rules="[{required: true, message: '模板类型不能为空'}]">
+              <el-select v-model="form.kind" placeholder="请选择活动区域">
+                <el-option label="前端" value="1"></el-option>
+                <el-option label="后端" value="2"></el-option>
+                <el-option label="脚本" value="3"></el-option>
+                <el-option label="系统" value="4"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="镜像" prop="image" :label-width="formLabelWidth" :rules="[{required: true, message: '镜像不能为空'}]">
+              <el-input v-model="form.image" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="标签" prop="tags" :label-width="formLabelWidth" :rules="[{required: true, message: '标签不能为空'}]">
+              <el-input v-model="form.tags" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="描述" prop="description" :label-width="formLabelWidth" :rules="[{required: true, message: '模板描述不能为空'}]">
+              <el-input v-model="form.description" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="logo" prop="avatar" :label-width="formLabelWidth" :rules="[{required: true, message: '模板logo不能为空'}]">
+              <el-input v-model="form.avatar" autocomplete="off"></el-input>
+            </el-form-item>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="cancel">取 消</el-button>
+            <el-button type="primary" @click="createTemplate('form')">确 定</el-button>
+          </div>
+        </el-dialog>
         <div class="template">
           <div class="template-img">
             <img src="~assets/logos/python.jpg" />
@@ -39,7 +70,7 @@
                 启动
               </div>
               <div>
-                停止
+                编辑
               </div>
               <div>
                 删除
@@ -62,7 +93,7 @@
                 启动
               </div>
               <div>
-                停止
+                编辑
               </div>
               <div>
                 删除
@@ -85,7 +116,7 @@
                 启动
               </div>
               <div>
-                停止
+                编辑
               </div>
               <div>
                 删除
@@ -108,7 +139,7 @@
                 启动
               </div>
               <div>
-                停止
+                编辑
               </div>
               <div>
                 删除
@@ -131,7 +162,7 @@
                 启动
               </div>
               <div>
-                停止
+                编辑
               </div>
               <div>
                 删除
@@ -140,21 +171,38 @@
           </div>
         </div>
       </div>
+      
   </div>
 </template>
 
 <script>
+import {createSpaceTemplate} from "networks/space/space"
 export default {
+  props:{
+    resource:{
+      type: String,
+      default: ""
+    }
+  },
   data () {
     return {
       showMore:"",
-      // resource: "space_template",
+      dialogFormVisible: false,
+      form: {
+          name: '',
+          kind: '',
+          image: '',
+          tags: '',
+          description: "",
+          avatar: "",
+        },
+        formLabelWidth: '120px'
     }
   },
   components: {
   },
   mounted() {
-    // this.resource = "space_template"
+    console.log(this.resource,"黑黑黑黑黑黑")
   },
   methods: {
     show_more(field){
@@ -163,7 +211,21 @@ export default {
       }else{
         this.showMore = "";
       }
-      
+    },
+    cancel(){
+      this.dialogFormVisible = false
+    },
+    createTemplate(form){
+        this.$refs[form].validate((valid) => {
+          if (valid) {
+            createSpaceTemplate(this.form).then(res => {
+              console.log(res.data.data)
+            })
+            this.dialogFormVisible = false
+          } else {
+            return false;
+          }
+        });
     }
   },
 }
@@ -234,4 +296,10 @@ export default {
     color: white;
     padding: 5px 0;
   }
+  .el-dialog__body {
+    padding: 0;
+    color: #606266;
+    font-size: 14px;
+    word-break: break-all;
+}
 </style>

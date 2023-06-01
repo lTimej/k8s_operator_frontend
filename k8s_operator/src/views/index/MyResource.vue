@@ -1,10 +1,10 @@
 <template>
   <div class="my-resource">
       <div class="process">
-        <cpu @getCpu="getCpu"/>
-        <memory @getMemory="getMemory"/>
-        <disk @getDisk="getDisk"/>
-        <net @getNet="getNet"/>
+        <cpu @getCpu="getCpu" :resource="resource"/>
+        <memory @getMemory="getMemory" :resource="resource"/>
+        <disk @getDisk="getDisk" :resource="resource"/>
+        <net @getNet="getNet" :resource="resource"/>
       </div>
       <div class="circle">
           <div class="cpu"><el-progress type="circle" :percentage="cpu"></el-progress></div>
@@ -21,6 +21,12 @@ import Memory from "views/index/resource/Memory"
 import Disk from "views/index/resource/Disk"
 import Net from "views/index/resource/Net"
 export default {
+  props:{
+    resource:{
+      type: String,
+      default: ""
+    }
+  },
   data () {
     return {
       cpu: 0,
@@ -36,7 +42,7 @@ export default {
     Net,
   },
   mounted() {
-
+    console.log(this.resource,"哈哈哈哈哈")
   },
 
   methods: {
@@ -59,6 +65,12 @@ export default {
       }
       return this.net
     }
+  },
+  deactivated(){
+    console.log("1激活deactivated!!!!!!!!")
+  },
+  activated() {
+    console.log("1激活activated!!!!!!!!!");
   },
 }
 

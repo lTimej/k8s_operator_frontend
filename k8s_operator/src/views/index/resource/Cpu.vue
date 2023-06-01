@@ -16,7 +16,10 @@ import {getCpu} from "networks/resource/resource"
 export default {
   name: "Cpu",
   props:{
-    
+    resource:{
+      type: String,
+      default: ""
+    }
   },
   data () {
     return {
@@ -114,10 +117,10 @@ export default {
     }
   },
   deactivated(){
-    console.log("deactivated狗子函数")
+    console.log("2deactivated狗子函数")
   },
   activated() {
-    console.log("1激活activated钩子函数");
+    console.log("2激活activated钩子函数");
   },
 }
 

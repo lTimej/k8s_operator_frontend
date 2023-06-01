@@ -29,8 +29,8 @@
               <span>空间模板</span>
             </div>
           </el-aside>
-          <my-resource v-show="resource == 'my_resource'" />
-          <space-template v-show="resource == 'space_template'"/>
+          <my-resource v-show="resource == 'my_resource'" :resource="resource"/>
+          <space-template v-show="resource == 'space_template'" :resource="resource"/>
         </el-container>
       </el-container>
     </div>
