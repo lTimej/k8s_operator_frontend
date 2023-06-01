@@ -22,16 +22,15 @@
           <el-aside width="100px">
             <div class="my-resource" @click="toMyResource" :class="{active: resource==='my_resource'}">
               <i class="el-icon-stopwatch"></i>
-              <span>{{ resource }}</span>
+              <span>我的资源</span>
             </div>
             <div class="space-template" @click="toSpaceTemplate" :class="{active: resource==='space_template'}">
               <i class="el-icon-document-copy"></i>
-              <span>{{ resource }}</span>
+              <span>空间模板</span>
             </div>
           </el-aside>
-          <slot></slot>
-          <!-- <my-resource v-show="resource == 'my_resource'" />
-          <space-template v-show="resource == 'space_template'"/> -->
+          <my-resource v-show="resource == 'my_resource'" />
+          <space-template v-show="resource == 'space_template'"/>
         </el-container>
       </el-container>
     </div>
@@ -39,8 +38,8 @@
 </template>
 
 <script>
-// import MyResource from "views/index/MyResource"
-// import SpaceTemplate from "views/index/SpaceTemplate"
+import MyResource from "views/index/MyResource"
+import SpaceTemplate from "views/index/SpaceTemplate"
 export default {
   name: "Index",
   data() {
@@ -49,8 +48,8 @@ export default {
     }
   },
   components: {
-    // MyResource,
-    // SpaceTemplate,
+    MyResource,
+    SpaceTemplate,
   },
   mounted() {
 
@@ -62,16 +61,12 @@ export default {
       window.sessionStorage.clear()
     },
     toMyResource(){
-      // this.resource = "my_resource";
       this.$router.push("/resource")
       this.resource = "my_resource";
-      console.log(this.resource,"=========")
     },
     toSpaceTemplate(){
-      // this.resource = "space_template";
       this.$router.push("/space/template")
       this.resource = "space_template";
-      console.log(this.resource,"-----------")
     }
   },
 }

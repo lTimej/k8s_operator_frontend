@@ -7,7 +7,7 @@ Vue.use(VueRouter);
 const routes = [
     {
       name:'首页',
-      component:() => import('views/index/Index'),
+      component:() => import('views/index/MyResource'),
       path:'/',
       meta:{
         title: "首页"
@@ -31,7 +31,7 @@ const routes = [
     },
     {
       name:'我的资源',
-      component:() => import('views/index/Index'),
+      component:() => import('views/index/MyResource'),
       path:'/resource',
       meta:{
         title: "资源"
@@ -39,7 +39,7 @@ const routes = [
   },
   {
     name:'空间模板',
-    component:() => import('views/index/Index'),
+    component:() => import('views/index/SpaceTemplate'),
     path:'/space/template',
     meta:{
       title: "空间模板"

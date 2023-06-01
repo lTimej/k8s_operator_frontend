@@ -1,6 +1,5 @@
 <template>
   <div class="space-template">
-    <index resource="space_template">
       <div class="space-template-item">
         <div class="template">
           <div class="template-img">
@@ -141,12 +140,10 @@
           </div>
         </div>
       </div>
-    </index>
   </div>
 </template>
 
 <script>
-import Index from "views/index/Index"
 export default {
   data () {
     return {
@@ -155,7 +152,6 @@ export default {
     }
   },
   components: {
-    Index,
   },
   mounted() {
     // this.resource = "space_template"
@@ -181,12 +177,13 @@ export default {
       left: 100px;
       right: 0;
       bottom: 0; */
+      width: 100%;
   }
   .space-template .space-template-item{
     display: flex;
     justify-content: stretch;
     align-items: center;
-    width: 100%;
+    /* width: 100%; */
     flex-wrap: wrap;
     margin:44px 0 0 100px;
     /* text-align: center; */
