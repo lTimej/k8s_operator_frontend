@@ -1,34 +1,30 @@
 <template>
   <div class="space-template">
-      <div class="space-template-create">
-            <el-button type="primary" @click="showCreateTemplate">创建空间模板</el-button>
-          </div>
       <div class="space-template-item">
-        <div class="template" @click="showCreateTemplate" v-for="(template,index) in templates" :key="index">
+        <div class="template" @click="dialogFormVisible = true">
           <div class="template-img">
-            <img :src="bindLogo(template.Avatar)" />
+            <img src="~assets/logos/python.jpg" />
           </div>
           <div class="template-desc">
-            <div class="template-title">{{ template.Name  }}</div>
-            <div class=template-version>{{ template.Tags  }}</div>
-            <div class=template-version>{{ template.Description  }}</div>
+            <div class="template-title">All in One</div>
+            <div class=template-version>支持Go、Python、vue等</div>
           </div>
-          <div class="template-edit" @click.stop="show_more(index)">
+          <div class="template-edit" @click="show_more('all')">
             <i class="el-icon-more"></i>
-            <div class="template-more" v-show="showMore==index" @click.stop>
+            <div class="template-more" v-show="showMore=='all'" @click.stop>
               <div>
                 启动
               </div>
-              <div @click="showEditTemplate(index)">
+              <div>
                 编辑
               </div>
-              <div @click="deleteTemplate(index)">
+              <div>
                 删除
               </div>
             </div>
           </div>
         </div>
-        <el-dialog :title="templateTitle" :visible.sync="dialogFormVisible">
+        <el-dialog title="创建空间模板" :visible.sync="dialogFormVisible">
           <el-form :model="form" ref="form">
             <el-form-item label="模板名称" prop="name" :label-width="formLabelWidth" :rules="[{required: true, message: '模板名称不能为空'}]">
               <el-input v-model="form.name" autocomplete="off"></el-input>
@@ -39,7 +35,7 @@
               </el-select>
             </el-form-item>
             <el-form-item label="镜像" prop="image" :label-width="formLabelWidth" :rules="[{required: true, message: '镜像不能为空'}]">
-              <el-input v-model="form.image" autocomplete="off" placeholder="镜像名:版本号"></el-input>
+              <el-input v-model="form.image" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="标签" prop="tags" :label-width="formLabelWidth" :rules="[{required: true, message: '标签不能为空'}]">
               <el-input v-model="form.tags" autocomplete="off"></el-input>
@@ -48,7 +44,7 @@
               <el-input v-model="form.description" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="logo" prop="avatar" :label-width="formLabelWidth" :rules="[{required: true, message: '模板logo不能为空'}]">
-              <el-input v-model="form.avatar" autocomplete="off" placeholder="xxx.jpg | png"></el-input>
+              <el-input v-model="form.avatar" autocomplete="off"></el-input>
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
@@ -56,6 +52,121 @@
             <el-button type="primary" @click="createTemplate('form')">确 定</el-button>
           </div>
         </el-dialog>
+        <div class="template">
+          <div class="template-img">
+            <img src="~assets/logos/python.jpg" />
+          </div>
+          <div class="template-desc">
+            <div class="template-title">Python</div>
+            <div class=template-version>Python 3.8.10</div>
+          </div>
+          <div class="template-edit" @click="show_more('python')">
+            <i class="el-icon-more"></i>
+            <div class="template-more" v-show="showMore=='python'" @click.stop>
+              <div>
+                启动
+              </div>
+              <div>
+                编辑
+              </div>
+              <div>
+                删除
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="template">
+          <div class="template-img">
+            <img src="~assets/logos/go.png" />
+          </div>
+          <div class="template-desc">
+            <div class="template-title">Go</div>
+            <div class=template-version>Go 1.19.5</div>
+          </div>
+          <div class="template-edit" @click="show_more('go')">
+            <i class="el-icon-more"></i>
+            <div class="template-more" v-show="showMore=='go'" @click.stop>
+              <div>
+                启动
+              </div>
+              <div>
+                编辑
+              </div>
+              <div>
+                删除
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="template">
+          <div class="template-img">
+            <img src="~assets/logos/java.jpg" />
+          </div>
+          <div class="template-desc">
+            <div class="template-title">Java</div>
+            <div class=template-version>JDK 1.8.0 Maven 3.8.1</div>
+          </div>
+          <div class="template-edit" @click="show_more('java')">
+            <i class="el-icon-more"></i>
+            <div class="template-more" v-show="showMore=='java'" @click.stop>
+              <div>
+                启动
+              </div>
+              <div>
+                编辑
+              </div>
+              <div>
+                删除
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="template">
+          <div class="template-img">
+            <img src="~assets/logos/ubuntu.png" />
+          </div>
+          <div class="template-desc">
+            <div class="template-title">Ubuntu 18.04</div>
+            <div class=template-version>内置Python3.8.10</div>
+          </div>
+          <div class="template-edit" @click="show_more('ubuntu')">
+            <i class="el-icon-more"></i>
+            <div class="template-more" v-show="showMore=='ubuntu'" @click.stop>
+              <div>
+                启动
+              </div>
+              <div>
+                编辑
+              </div>
+              <div>
+                删除
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="template">
+          <div class="template-img">
+            <img src="~assets/logos/vue.jpg" />
+          </div>
+          <div class="template-desc">
+            <div class="template-title">Vue</div>
+            <div class=template-version>Vue 2.6.25</div>
+          </div>
+          <div class="template-edit" @click="show_more('vue')">
+            <i class="el-icon-more"></i>
+            <div class="template-more" v-show="showMore=='vue'" @click.stop>
+              <div>
+                启动
+              </div>
+              <div>
+                编辑
+              </div>
+              <div>
+                删除
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       
   </div>
@@ -64,9 +175,6 @@
 <script>
 import {createSpaceTemplate} from "networks/space/space"
 import {getTemplateKind} from "networks/space/space"
-import {getSpaceTemplate} from "networks/space/space"
-import {editSpaceTemplate} from "networks/space/space"
-import {deleteSpaceTemplate} from "networks/space/space"
 export default {
   props:{
     resource:{
@@ -76,127 +184,53 @@ export default {
   },
   data () {
     return {
-      showMore: -1,
+      showMore:"",
       dialogFormVisible: false,
       kinds: [],
       form: {
           name: '',
-          kind: "",
+          kind: '',
           image: '',
           tags: '',
           description: "",
           avatar: "",
-          index: -1,
         },
-      formLabelWidth: '120px',
-      templates: [],
-      templateTitle: "创建空间模板",
-      createORedit: 0,
+        formLabelWidth: '120px'
     }
   },
   components: {
   },
   mounted() {
       this.get_template_kind();
-      this.get_space_template();
   },
   methods: {
-    bindLogo(logo) {
-	return require("@/assets/logos/"+logo);
-    },
     show_more(field){
-      if(this.showMore == -1 || this.showMore != field){
+      if(this.showMore == "" || this.showMore != field){
         this.showMore = field
       }else{
-        this.showMore = -1;
+        this.showMore = "";
       }
     },
     cancel(){
       this.dialogFormVisible = false
-      this.showMore = -1;
     },
-    showCreateTemplate(){
-        this.templateTitle = "创建空间模板";
-        this.createORedit = 1;
-        if(this.showMore == -1){
-            this.dialogFormVisible = true;
-        }
-        console.log(this.templateTitle,"5555555555");
-        this.showMore = -1;
-        this.form = {
-           name: "",
-           kind: "",
-           image: "",
-           tags: "",
-           description: "",
-           avatar: "",
-           index: -1,
-        }
-    },
-    createTemplate(form){
-        this.$refs[form].validate((valid) => {
-          if (valid) {
-                if(this.createORedit == 1){
-                    createSpaceTemplate(this.form).then(res => {
-                      this.templates.push(res.data.data);
-                      this.$toast.show(res.data.msg,2000);
-                    })
-                }else if(this.createORedit == 2){
-                    let index = this.form.index;
-                    editSpaceTemplate(this.form,this.templates[index].Id).then(res => {
-                      if(res.status == 200){
-                          this.templates[index].KindId = this.form.kind;
-                          this.templates[index].Name = this.form.name;
-                          this.templates[index].Description = this.form.description;
-                          this.templates[index].Tags = this.form.tags;
-                          this.templates[index].Image = this.form.image;
-                          this.templates[index].Avatar = this.form.avatar;
-                          this.$toast.show(res.data.msg,2000);
-                          
-                      }
-                    }).catch(err => {
-                        console.log(err)
-                    })
-                }
-                this.showMore = -1;
+        createTemplate(form){
+            this.$refs[form].validate((valid) => {
+              if (valid) {
+                createSpaceTemplate(this.form).then(res => {
+                  console.log(res.data.data)
+                })
                 this.dialogFormVisible = false
               } else {
                 return false;
               }
-        });
-    },
+            });
+        },
     get_template_kind(){
         getTemplateKind().then(res => {
             console.log(res.data);
             this.kinds = res.data.data
         })
-    },
-    get_space_template(){
-        getSpaceTemplate().then(res => {
-            this.templates = res.data.data;	    
-            console.log(this.templates,"333");
-        })
-    },
-    showEditTemplate(index){
-        this.templateTitle = "编辑空间模板";
-        this.createORedit = 2;
-        this.dialogFormVisible = true;
-        this.form = {
-           name: this.templates[index].Name,
-           kind: this.templates[index].KindId,
-           image: this.templates[index].Image,
-           tags: this.templates[index].Tags,
-           description: this.templates[index].Description,
-           avatar: this.templates[index].Avatar,      
-           index: index,
-        }
-    },
-    deleteTemplate(index){
-       deleteSpaceTemplate(this.templates[index].Id).then(res => {
-           this.$toast.show(res.data.msg,2000);
-           this.templates.splice(index,1);
-       })
-       console.log(index) 
     }
   },
 }
@@ -212,16 +246,13 @@ export default {
       bottom: 0; */
       width: 100%;
   }
-  .space-template-create{
-    margin: 44px 0 10px 100px;
-  }
   .space-template .space-template-item{
     display: flex;
     justify-content: stretch;
     align-items: center;
     /* width: 100%; */
     flex-wrap: wrap;
-    margin:0 0 0 100px;
+    margin:44px 0 0 100px;
     /* text-align: center; */
   }
   .space-template-item .template{
