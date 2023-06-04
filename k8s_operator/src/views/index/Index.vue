@@ -28,9 +28,14 @@
               <i class="el-icon-document-copy"></i>
               <span>空间模板</span>
             </div>
+            <div class="space" @click="toSpace" :class="{active: resource==='space'}">
+              <i class="el-icon-film"></i>
+              <span>工作空间</span>
+            </div>
           </el-aside>
-          <my-resource v-show="resource == 'my_resource'" :resource="resource"/>
-          <space-template v-show="resource == 'space_template'" :resource="resource"/>
+          <slot></slot>
+          <!-- <my-resource v-if="resource == 'my_resource'" :resource="resource"/>
+          <space-template v-if="resource == 'space_template'" :resource="resource"/> -->
         </el-container>
       </el-container>
     </div>
@@ -38,18 +43,24 @@
 </template>
 
 <script>
-import MyResource from "views/index/MyResource"
-import SpaceTemplate from "views/index/SpaceTemplate"
+// import MyResource from "views/index/MyResource"
+// import SpaceTemplate from "views/index/SpaceTemplate"
 export default {
   name: "Index",
+  props:{
+    resource:{
+      type: String,
+      default: ""
+    }
+  },
   data() {
     return {
-      resource: "my_resource"
+      // resource: "my_resource"
     }
   },
   components: {
-    MyResource,
-    SpaceTemplate,
+    // MyResource,
+    // SpaceTemplate,
   },
   mounted() {
 
@@ -62,11 +73,15 @@ export default {
     },
     toMyResource(){
       this.$router.push("/resource")
-      this.resource = "my_resource";
+      // this.resource = "my_resource";
     },
     toSpaceTemplate(){
       this.$router.push("/space/template")
-      this.resource = "space_template";
+      // this.resource = "space_template";
+    },
+    toSpace(){
+      this.$router.push("/space")
+      // this.resource = "space";
     }
   },
 }
@@ -144,12 +159,12 @@ export default {
   .home .my-resource{
     margin-top: 44px;
   }
-  .home .my-resource,.home .space-template{
+  .home .my-resource,.home .space-template,.home .space{
     color: black;
     padding: 10px 5px;
     cursor: pointer;
   }
-  .home .my-resource i,.home .space-template i{
+  .home .my-resource i,.home .space-template i,.home .space i{
     font-size: 22px;
     color: black;
     padding-right: 3px;

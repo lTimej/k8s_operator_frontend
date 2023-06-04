@@ -1,17 +1,19 @@
 <template>
   <div class="my-resource">
-      <div class="process">
-        <cpu @getCpu="getCpu" :resource="resource"/>
-        <memory @getMemory="getMemory" :resource="resource"/>
-        <disk @getDisk="getDisk" :resource="resource"/>
-        <net @getNet="getNet" :resource="resource"/>
-      </div>
-      <div class="circle">
-          <div class="cpu"><el-progress type="circle" :percentage="cpu"></el-progress></div>
-          <div class="memory"><el-progress type="circle" :percentage="memory"></el-progress></div>
-          <div class="disk"><el-progress type="circle" :percentage="disk"></el-progress></div>
-          <div class="net"><el-progress type="circle" :percentage="0" :format="definePerc"></el-progress></div>
-      </div>
+      <index :resource="resource">
+        <div class="process">
+          <cpu @getCpu="getCpu" :resource="resource"/>
+          <memory @getMemory="getMemory" :resource="resource"/>
+          <disk @getDisk="getDisk" :resource="resource"/>
+          <net @getNet="getNet" :resource="resource"/>
+        </div>
+        <div class="circle">
+            <div class="cpu"><el-progress type="circle" :percentage="cpu"></el-progress></div>
+            <div class="memory"><el-progress type="circle" :percentage="memory"></el-progress></div>
+            <div class="disk"><el-progress type="circle" :percentage="disk"></el-progress></div>
+            <div class="net"><el-progress type="circle" :percentage="0" :format="definePerc"></el-progress></div>
+        </div>
+      </index>
   </div>
 </template>
 
@@ -20,19 +22,15 @@ import Cpu from "views/index/resource/Cpu"
 import Memory from "views/index/resource/Memory"
 import Disk from "views/index/resource/Disk"
 import Net from "views/index/resource/Net"
+import Index from "views/index/Index"
 export default {
-  props:{
-    resource:{
-      type: String,
-      default: ""
-    }
-  },
   data () {
     return {
       cpu: 0,
       memory: 0,
       disk: 0,
       net: "",
+      resource: "my_resource",
     }
   },
   components: {
@@ -40,9 +38,10 @@ export default {
     Memory,
     Disk,
     Net,
+    Index,
   },
   mounted() {
-    console.log(this.resource,"哈哈哈哈哈")
+  
   },
 
   methods: {
@@ -66,12 +65,12 @@ export default {
       return this.net
     }
   },
-  deactivated(){
-    console.log("1激活deactivated!!!!!!!!")
-  },
-  activated() {
-    console.log("1激活activated!!!!!!!!!");
-  },
+  // activated() {
+  //   console.log("进入资源")
+  // },
+  // deactivated() {
+  //   console.log("离开资源")
+  // },
 }
 
 </script>

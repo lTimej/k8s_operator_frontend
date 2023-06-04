@@ -1,10 +1,11 @@
 <template>
   <div class="space-template">
-      <div class="space-template-create">
+      <index :resource="resource">
+        <div class="space-template-create">
             <el-button type="primary" @click="showCreateTemplate">创建空间模板</el-button>
           </div>
       <div class="space-template-item">
-        <div class="template" @click="showCreateTemplate" v-for="(template,index) in templates" :key="index">
+        <div class="template" @click="showCreateSpace" v-for="(template,index) in templates" :key="index">
           <div class="template-img">
             <img :src="bindLogo(template.Avatar)" />
           </div>
@@ -28,13 +29,13 @@
             </div>
           </div>
         </div>
-        <el-dialog :title="templateTitle" :visible.sync="dialogFormVisible">
+        <el-dialog :title="templateTitle" :visible.sync="dialogFormVisible" >
           <el-form :model="form" ref="form">
             <el-form-item label="模板名称" prop="name" :label-width="formLabelWidth" :rules="[{required: true, message: '模板名称不能为空'}]">
               <el-input v-model="form.name" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="模板类型" prop="kind"  :label-width="formLabelWidth" :rules="[{required: true, message: '模板类型不能为空'}]">
-              <el-select v-model="form.kind" placeholder="请选择活动区域">
+              <el-select v-model="form.kind" placeholder="请选择模板类型">
                 <div v-for="(kind,index) in kinds" :key="index"><el-option :label="kind.Name" :value="kind.Id"></el-option></div>
               </el-select>
             </el-form-item>
@@ -56,29 +57,47 @@
             <el-button type="primary" @click="createTemplate('form')">确 定</el-button>
           </div>
         </el-dialog>
+
+        <el-dialog :title="templateTitle" :visible.sync="dialogFormVisibleSpace" >
+          <el-form :model="formSpace" ref="formSpace">
+            <el-form-item label="空间名称" prop="name" :label-width="formLabelWidth" :rules="[{required: true, message: '空间名称不能为空'}]">
+              <el-input v-model="formSpace.name" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="空间规格" prop="spec"  :label-width="formLabelWidth" :rules="[{required: true, message: '资源规格不能为空'}]">
+              <el-select v-model="formSpace.spec" placeholder="请选择资源规格">
+                <div v-for="(spec,index) in specs" :key="index"><el-option :label="spec.Name" :value="spec.Id"></el-option></div>
+              </el-select>
+            </el-form-item>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="cancelSpace">取 消</el-button>
+            <el-button type="primary" @click="createSpace('formSpace')">确 定</el-button>
+          </div>
+        </el-dialog>
+        <!-- <create-space :dialogFormVisibleSpace="dialogFormVisibleSpace"/> -->
       </div>
+      </index>
       
   </div>
 </template>
 
 <script>
+import Index from "views/index/Index"
 import {createSpaceTemplate} from "networks/space/space"
 import {getTemplateKind} from "networks/space/space"
 import {getSpaceTemplate} from "networks/space/space"
 import {editSpaceTemplate} from "networks/space/space"
 import {deleteSpaceTemplate} from "networks/space/space"
+import {getSpaceSpec} from "networks/space/space"
+// import CreateSpace from "views/index/space/CreateSpace"
 export default {
-  props:{
-    resource:{
-      type: String,
-      default: ""
-    }
-  },
   data () {
     return {
       showMore: -1,
       dialogFormVisible: false,
+      dialogFormVisibleSpace: false,
       kinds: [],
+      specs: [],
       form: {
           name: '',
           kind: "",
@@ -88,17 +107,28 @@ export default {
           avatar: "",
           index: -1,
         },
+        formSpace:{
+          name: "",
+          spec: "",
+        },
       formLabelWidth: '120px',
       templates: [],
       templateTitle: "创建空间模板",
       createORedit: 0,
+      resource: "space_template",
     }
   },
   components: {
+    // CreateSpace,
+    Index,
   },
   mounted() {
       this.get_template_kind();
       this.get_space_template();
+      this.get_spece_spec();
+  },
+  created(){
+    
   },
   methods: {
     bindLogo(logo) {
@@ -115,13 +145,43 @@ export default {
       this.dialogFormVisible = false
       this.showMore = -1;
     },
+    cancelSpace(){
+      this.dialogFormVisibleSpace = false
+    },
+    createSpace(formSpace){
+      this.$refs[formSpace].validate((valid) => {
+          if (valid) {
+                this.dialogFormVisibleSpace = false
+                console.log("创建工作空间")
+              } else {
+                return false;
+              }
+        });
+      
+    },
     showCreateTemplate(){
         this.templateTitle = "创建空间模板";
         this.createORedit = 1;
-        if(this.showMore == -1){
-            this.dialogFormVisible = true;
-        }
+        this.dialogFormVisible = true;
         console.log(this.templateTitle,"5555555555");
+        this.showMore = -1;
+        this.form = {
+           name: "",
+           kind: "",
+           image: "",
+           tags: "",
+           description: "",
+           avatar: "",
+           index: -1,
+        }
+    },
+    showCreateSpace(){
+      this.templateTitle = "创建工作空间";
+        // this.createORedit = 1;
+        if(this.showMore == -1){
+            this.dialogFormVisibleSpace = true;
+        }
+        console.log(this.templateTitle,"666666",this.dialogFormVisibleSpace);
         this.showMore = -1;
         this.form = {
            name: "",
@@ -197,39 +257,51 @@ export default {
            this.templates.splice(index,1);
        })
        console.log(index) 
+    },
+    get_spece_spec(){
+      getSpaceSpec().then(res =>{
+        console.log(res)
+        this.specs = res.data.data;
+      }).catch(err =>{
+        console.log(err)
+      })
     }
+  },
+  activated() {
+    console.log("进入模板")
+  },
+  deactivated() {
+    console.log("离开模板")
   },
 }
 
 </script>
 <style scoped>
   .space-template{
-      /* margin:44px 0 0 80px; */
-      /* position: absolute;
-      top: 44px;
-      left: 100px;
-      right: 0;
-      bottom: 0; */
       width: 100%;
   }
   .space-template-create{
-    margin: 44px 0 10px 100px;
+    height: 40px;
+    position: fixed;
+    top: 60px;
+    left: 120px;
   }
   .space-template .space-template-item{
     display: flex;
     justify-content: stretch;
     align-items: center;
-    /* width: 100%; */
     flex-wrap: wrap;
-    margin:0 0 0 100px;
-    /* text-align: center; */
+    position: absolute;
+    top: 120px;
+    left: 110px;
   }
   .space-template-item .template{
       background-color: white;
       flex: 0 0 24%;
       height: 200px;
       margin: 0 10px 20px 0;
-      border:1px solid lightgray
+      border:1px solid lightgray;
+      cursor: pointer;
   }
   .space-template-item .template .template-img{
     margin: 60px 0 0 10px;

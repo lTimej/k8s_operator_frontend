@@ -51,3 +51,67 @@ export function deleteSpaceTemplate(id) {
         method:'delete'
     })
 }
+
+//获取空间规格
+export function getSpaceSpec() {
+    return requests({
+        url:'/space/spec/get',
+        method:'get',
+    })
+}
+
+//获取空间
+export function getSpace() {
+    return requests({
+        url:'/space/get',
+        method:'get',
+    })
+}
+
+//创建空间模板
+export function createSpace(name,template_id,space_spec_id,user_id) {
+    return requests({
+        url:'/space/create',
+        method:'post',
+        data:{
+            "name": name,       
+            "template_id": template_id, 
+            "space_spec_id": space_spec_id,
+            "user_id": user_id,     
+        }
+    })
+}
+
+//启动空间模板
+export function runSpace(id) {
+    return requests({
+        url:'/space/start',
+        method:'put',
+        data:{
+            "id": id    
+        }
+    })
+}
+
+//停止空间模板
+export function stopSpace(id,sid) {
+    return requests({
+        url:'/space/stop',
+        method:'put',
+        data:{
+            "id": id,       
+            "sid": sid   
+        }
+    })
+}
+
+//删除空间模板
+export function delSpace(id) {
+    return requests({
+        url:'/space/delete',
+        method:'delete',
+        data:{     
+            "id": id    
+        }
+    })
+}

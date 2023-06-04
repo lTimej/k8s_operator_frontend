@@ -22,6 +22,7 @@ export default {
       data: [],
       option: {},
       myChart: null,
+      timer: null,
     }
   },
   components: {
@@ -30,7 +31,7 @@ export default {
   mounted() {
     var chart = this.$refs.disk
     this.myChart = this.$echarts.init(chart)
-    this.init_data()
+    
   },
   methods: {
     addData(shift){
@@ -105,11 +106,19 @@ export default {
           }
         ]
       };
-      setInterval(this.set_interval, 100000);
+      this.timer = setInterval(this.set_interval, 1000);
 
       this.option && this.myChart.setOption(this.option);
     },
-  }
+  },
+  activated() {
+    // console.log("进入disk")
+    this.init_data()
+  },
+  deactivated() {
+    // console.log("离开disk")
+    clearInterval(this.timer)
+  },
 }
 
 </script>

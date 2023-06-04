@@ -27,6 +27,7 @@ export default {
       data: [],
       option: {},
       myChart: null,
+      timer: null,
 
     }
   },
@@ -36,11 +37,6 @@ export default {
   mounted() {
     var chart1 = this.$refs.cpu1;
     this.myChart = this.$echarts.init(chart1);
-    this.init_data();
-    // var chart2 = this.$refs.cpu2;
-    // var myChart2 = this.$echarts.init(chart2);
-    // this.init_data(myChart2);
-    
   },
   methods: {
     addData(shift){
@@ -111,16 +107,18 @@ export default {
           }
         ]
       };
-      setInterval(this.set_interval, 100000);
+      this.timer = setInterval(this.set_interval, 1000);
 
       this.option && this.myChart.setOption(this.option);
     }
   },
-  deactivated(){
-    console.log("2deactivated狗子函数")
-  },
   activated() {
-    console.log("2激活activated钩子函数");
+    // console.log("进入cpu")
+    this.init_data();
+  },
+  deactivated() {
+    // console.log("离开cpu")
+    clearInterval(this.timer)
   },
 }
 

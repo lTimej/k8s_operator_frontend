@@ -7,7 +7,7 @@ Vue.use(VueRouter);
 const routes = [
     {
       name:'首页',
-      component:() => import('views/index/Index'),
+      component:() => import('views/index/MyResource'),
       path:'/',
       meta:{
         title: "首页"
@@ -31,7 +31,7 @@ const routes = [
     },
     {
       name:'我的资源',
-      component:() => import('views/index/Index'),
+      component:() => import('views/index/MyResource'),
       path:'/resource',
       meta:{
         title: "资源"
@@ -39,12 +39,20 @@ const routes = [
   },
   {
     name:'空间模板',
-    component:() => import('views/index/Index'),
+    component:() => import('views/index/SpaceTemplate'),
     path:'/space/template',
     meta:{
       title: "空间模板"
+    },
+  },
+  {
+    name:'工作空间',
+    component:() => import('views/index/Space'),
+    path:'/space',
+    meta:{
+      title: "工作空间"
     }
-},
+  }
 ];
 
 const originalPush = VueRouter.prototype.push
@@ -60,7 +68,8 @@ const router = new VueRouter({
 router.beforeEach((to,from,next)=>{
     if(to.meta.title){
       document.title = to.meta.title;
-  }
+    }
+    console.log(from,"77777777777",to)
     let white_list = ['/login','/register'];
     if(white_list.indexOf(to.path)!==-1){
       next();
