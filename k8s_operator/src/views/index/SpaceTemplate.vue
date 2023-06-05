@@ -5,7 +5,7 @@
             <el-button type="primary" @click="showCreateTemplate">创建空间模板</el-button>
           </div>
       <div class="space-template-item">
-        <div class="template" @click="showCreateSpace" v-for="(template,index) in templates" :key="index">
+        <div class="template" @click="showCreateSpace(template.Id)" v-for="(template,index) in templates" :key="index">
           <div class="template-img">
             <img :src="bindLogo(template.Avatar)" />
           </div>
@@ -63,8 +63,8 @@
             <el-form-item label="空间名称" prop="name" :label-width="formLabelWidth" :rules="[{required: true, message: '空间名称不能为空'}]">
               <el-input v-model="formSpace.name" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="空间规格" prop="spec"  :label-width="formLabelWidth" :rules="[{required: true, message: '资源规格不能为空'}]">
-              <el-select v-model="formSpace.spec" placeholder="请选择资源规格">
+            <el-form-item label="空间规格" prop="space_spec_id"  :label-width="formLabelWidth" :rules="[{required: true, message: '资源规格不能为空'}]">
+              <el-select v-model="formSpace.space_spec_id" placeholder="请选择资源规格">
                 <div v-for="(spec,index) in specs" :key="index"><el-option :label="spec.Name" :value="spec.Id"></el-option></div>
               </el-select>
             </el-form-item>
@@ -89,7 +89,8 @@ import {getSpaceTemplate} from "networks/space/space"
 import {editSpaceTemplate} from "networks/space/space"
 import {deleteSpaceTemplate} from "networks/space/space"
 import {getSpaceSpec} from "networks/space/space"
-// import CreateSpace from "views/index/space/CreateSpace"
+import {createSpace} from "networks/space/space"
+import {Base64} from "js-base64"
 export default {
   data () {
     return {
@@ -109,7 +110,9 @@ export default {
         },
         formSpace:{
           name: "",
-          spec: "",
+          space_spec_id: "",
+          template_id: 0,
+          user_id: 0,
         },
       formLabelWidth: '120px',
       templates: [],
@@ -151,8 +154,19 @@ export default {
     createSpace(formSpace){
       this.$refs[formSpace].validate((valid) => {
           if (valid) {
+                var userInfoStr =  window.sessionStorage.getItem("userInfo")
+                var userInfoByte = Base64.decode(userInfoStr)
+                var userInfo = JSON.parse(userInfoByte)
+                console.log("创建工作空间",userInfo)
+                this.formSpace.user_id = userInfo.Id
+                console.log(this.formSpace,"-------========")
+                createSpace(this.formSpace).then(res => {
+                    console.log(res.data,"66666666666");
+                    this.$toast.show(res.data.msg,2000);
+                }).catch(err => {
+                      console.log(err);
+                   })
                 this.dialogFormVisibleSpace = false
-                console.log("创建工作空间")
               } else {
                 return false;
               }
@@ -175,22 +189,15 @@ export default {
            index: -1,
         }
     },
-    showCreateSpace(){
+    showCreateSpace(template_id){
       this.templateTitle = "创建工作空间";
-        // this.createORedit = 1;
         if(this.showMore == -1){
             this.dialogFormVisibleSpace = true;
         }
         console.log(this.templateTitle,"666666",this.dialogFormVisibleSpace);
         this.showMore = -1;
-        this.form = {
-           name: "",
-           kind: "",
-           image: "",
-           tags: "",
-           description: "",
-           avatar: "",
-           index: -1,
+        this.formSpace = {
+           template_id: template_id,
         }
     },
     createTemplate(form){

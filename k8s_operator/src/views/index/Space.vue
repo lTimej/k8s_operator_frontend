@@ -3,25 +3,27 @@
         <div class="space">
             <div class="space-title">工作空间:</div>
             <el-table
-                :data="tableData"
+                :data="spaces"
                 style="width: 100%"
                 :row-class-name="tableRowClassName">
                 <el-table-column
-                prop="name"
+                prop="Name"
                 label="空间名称"
                 min-width="180"
                 >
                 </el-table-column>
                 <el-table-column
-                prop="template"
+                prop="templates[TemplateId]"
                 label="模板"
                 min-width="180"
+                :formatter="FormatterTemplate"
                 >
                 </el-table-column>
                 <el-table-column
-                prop="spec"
+                prop="SpecId"
                 label="规格"
                 min-width="180"
+                :formatter="FormatterSpec"
                 >
                 </el-table-column>
                 <el-table-column
@@ -35,18 +37,22 @@
                 label="状态"
                 min-width="180"
                 >
-                    <div :class="{run:isRun==0}">
+                  <template slot-scope="scope">
+                    <div :class="{run:scope.row.RunningStatus == 0}">
                       <i class="el-icon-view" ></i>
                     </div>
+                  </template>
                 </el-table-column>
                 <el-table-column
                 prop="option"
                 label="操作"
                 min-width="180"
                 >
-                    <i class="el-icon-video-play start" @click="startSpace"></i>
-                    <i class="el-icon-video-pause stop" @click="stopSpace"></i>
-                    <i class="el-icon-delete del" @click="delSpace"></i>
+                  <template slot-scope="scope">
+                    <i class="el-icon-video-play start" @click="startSpace(scope.$index)"></i>
+                    <i class="el-icon-video-pause stop" @click="stopSpace(scope.$index)"></i>
+                    <i class="el-icon-delete del" @click="delSpace(scope.$index)"></i>
+                 </template>
                 </el-table-column>
             </el-table>
         </div>
@@ -55,6 +61,12 @@
 
 <script>
 import Index from "views/index/Index"
+import {getSpace} from "networks/space/space"
+import {getSpaceTemplate} from "networks/space/space"
+import {getSpaceSpec} from "networks/space/space"
+import {stopSpace} from "networks/space/space"
+import {startSpace} from "networks/space/space"
+import {delSpace} from "networks/space/space"
 export default {
   data () {
     return {
@@ -67,6 +79,9 @@ export default {
         }],
         resource: "space",
         isRun: 0,
+        spaces: [],
+        templates: {},
+        specs: {},
     }
   },
   components: {
@@ -82,60 +97,112 @@ export default {
         } else if (rowIndex === 3) {
           return 'success-row';
         }
-        console.log(row)
+        console.log(row);
         return '';
       },
-      startSpace() {
+      get_space(){
+          getSpace().then(res => {
+             this.spaces = res.data.data;
+          })
+      },
+      startSpace(index) {
         this.$confirm('是否启动该工作空间?', '', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
-        }).then(() => {
+        }).then(async() => {
+          var msg = ""
+          await startSpace(this.spaces[index].Id).then(res => {
+              this.spaces[index].RunningStatus = 1;
+              msg = res.data.msg;
+          }).catch(err => {
+              console.log(err);
+          })
           this.$message({
             type: 'success',
-            message: '启动成功!'
+            message: msg
           })
-          this.isRun = 1;
-          console.log(this.isRun,"4444444")
         }).catch(() => {
                    
         });
       },
-      stopSpace() {
+      stopSpace(index) {
         this.$confirm('是否停止该工作空间?', '', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
-        }).then(() => {
+        }).then(async() => {
           this.isRun = 0;
-          console.log(this.isRun,"1111")
+          var msg = "";
+          await stopSpace(this.spaces[index].Id,this.spaces[index].Sid).then(res => {
+              this.spaces[index].RunningStatus = 0;
+              msg = res.data.msg;
+          }).catch(err => {
+             console.log(err);
+          })
           this.$message({
             type: 'success',
-            message: '停止成功!'
+            message: msg
           });
-          console.log(this.isRun,"22222")
           
         }).catch(() => {
           console.log(this.isRun,"3333")  
         });
       },
-      delSpace() {
+      delSpace(index) {
         this.$confirm('是否删除该工作空间?', '', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
-        }).then(() => {
+        }).then(async() => {
+          var msg = ""
+          await delSpace(this.spaces[index].Id).then(res => {
+              msg = res.data.msg;
+          }).catch(err => {
+              console.log(err);
+          })
+          this.spaces.slice(index,1);
           this.$message({
             type: 'success',
-            message: '删除成功!'
+            message: msg
           });
         }).catch(() => {
                    
         });
       },
+      get_space_template(){
+        getSpaceTemplate().then(res => {
+            let ret = res.data.data;
+            for(var i = 0;i < ret.length;i++){
+                this.templates[ret[i].Id] = ret[i].Name;
+            }
+            console.log(this.templates,"333");
+        })
+      },
+      FormatterTemplate(row, column){
+         console.log(column);
+         return this.templates[row.TemplateId];
+      },
+      get_space_spec(){
+          getSpaceSpec().then(res =>{
+              let ret = res.data.data;
+              for(var i = 0;i < ret.length;i++){
+                  this.specs[ret[i].Id] = ret[i].Name;
+              }
+          }).catch(err =>{
+            console.log(err)
+          })
+      },
+      FormatterSpec(row, column){
+         console.log(column);
+         return this.specs[row.SpecId];
+      },
   },
   activated() {
     console.log("进入空间")
+    this.get_space_template();
+    this.get_space();
+    this.get_space_spec();
   },
   deactivated() {
     console.log("离开空间")

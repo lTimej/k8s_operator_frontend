@@ -4,7 +4,7 @@ export function requests(config){
     //实例化对象
     let instance
     instance = axios.create({
-        baseURL:'http://172.20.16.20:8998',
+        baseURL:'http://192.168.70.99:8998',
         timeout: 10000,
         // withCredentials: true,
     });

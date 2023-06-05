@@ -69,21 +69,21 @@ export function getSpace() {
 }
 
 //创建空间模板
-export function createSpace(name,template_id,space_spec_id,user_id) {
+export function createSpace(formSpace) {
     return requests({
-        url:'/space/create',
+        url:'/space/create/run',
         method:'post',
         data:{
-            "name": name,       
-            "template_id": template_id, 
-            "space_spec_id": space_spec_id,
-            "user_id": user_id,     
+            "name": formSpace.name,       
+            "template_id": formSpace.template_id, 
+            "space_spec_id": formSpace.space_spec_id,
+            "user_id": formSpace.user_id,     
         }
     })
 }
 
 //启动空间模板
-export function runSpace(id) {
+export function startSpace(id) {
     return requests({
         url:'/space/start',
         method:'put',
@@ -98,7 +98,7 @@ export function stopSpace(id,sid) {
     return requests({
         url:'/space/stop',
         method:'put',
-        data:{
+pace
             "id": id,       
             "sid": sid   
         }
