@@ -128,9 +128,9 @@ export default {
   }
   .disk{
     height: 100%;
-    position: absolute;
-    top:0;
-    left:620px;
+    /* position: absolute; */
+    display: inline-block;
+    width: 24%;
   }
   .disk-item{
       margin:44px 0 0 70px;

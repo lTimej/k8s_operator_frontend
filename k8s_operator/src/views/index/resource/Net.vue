@@ -128,9 +128,9 @@ export default {
   }
   .net{
     height: 100%;
-    position: absolute;
-    top:0;
-    left:904px;
+    /* position: absolute; */
+    display: inline-block;
+    width: 24%;
   }
   .net-item{
       margin:44px 0 0 70px;

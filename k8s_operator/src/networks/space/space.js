@@ -98,7 +98,7 @@ export function stopSpace(id,sid) {
     return requests({
         url:'/space/stop',
         method:'put',
-        daga:{
+        data:{
             "id": id,       
             "sid": sid   
         }

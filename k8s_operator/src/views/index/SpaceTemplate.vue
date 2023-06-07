@@ -152,7 +152,7 @@ export default {
       this.dialogFormVisibleSpace = false
     },
     createSpace(formSpace){
-      this.$refs[formSpace].validate((valid) => {
+      this.$refs[formSpace].validate(async(valid) => {
           if (valid) {
                 var userInfoStr =  window.sessionStorage.getItem("userInfo")
                 var userInfoByte = Base64.decode(userInfoStr)
@@ -160,7 +160,7 @@ export default {
                 console.log("创建工作空间",userInfo)
                 this.formSpace.user_id = userInfo.Id
                 console.log(this.formSpace,"-------========")
-                createSpace(this.formSpace).then(res => {
+                await createSpace(this.formSpace).then(res => {
                     console.log(res.data,"66666666666");
                     this.$toast.show(res.data.msg,2000);
                 }).catch(err => {

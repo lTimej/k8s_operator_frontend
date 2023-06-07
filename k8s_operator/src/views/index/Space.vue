@@ -38,7 +38,7 @@
                 min-width="180"
                 >
                   <template slot-scope="scope">
-                    <div :class="{run:scope.row.RunningStatus == 0}">
+                    <div :class="{run:scope.row.RunningStatus == 0}" @click="open_workSpace(scope.$index)">
                       <i class="el-icon-view" ></i>
                     </div>
                   </template>
@@ -158,10 +158,10 @@ export default {
           var msg = ""
           await delSpace(this.spaces[index].Id).then(res => {
               msg = res.data.msg;
+              this.spaces.slice(index,1);
           }).catch(err => {
               console.log(err);
           })
-          this.spaces.slice(index,1);
           this.$message({
             type: 'success',
             message: msg
@@ -197,6 +197,12 @@ export default {
          console.log(column);
          return this.specs[row.SpecId];
       },
+      open_workSpace(index){
+          var href = "http://192.168.70.99/ws/" + this.spaces[index].Sid + "/";
+          if(this.spaces[index].RunningStatus == 1){
+              window.open(href);
+          }
+      }
   },
   activated() {
     console.log("进入空间")

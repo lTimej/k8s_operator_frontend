@@ -127,9 +127,9 @@ export default {
   }
   .memory{
     height: 100%;
-    position: absolute;
-    left:340px;
-    top:0;
+    /* position: absolute; */
+    display: inline-block;
+    width: 24%;
   }
   .memory-item{
       margin:44px 0 0 70px;

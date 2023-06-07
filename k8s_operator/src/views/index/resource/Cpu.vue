@@ -128,10 +128,10 @@ export default {
     padding: 0;
   }  
   .cpu{
-    height: 100%;
-    position: absolute;
-    top:0;
-    left:45px;
+     height: 100%;
+    /* position: absolute; */
+    display: inline-block;
+    width: 24%;
   }
   .cpu-item{
       margin:44px 0 0 80px;
